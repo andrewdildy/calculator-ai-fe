@@ -1,0 +1,93 @@
+<mat-drawer-container fullscreen>
+  <mat-drawer mode="side" opened class="library">
+    <div class="card-title">Library</div>
+    <div
+      cdkDropList
+      cdkDropListSortingDisabled
+      [cdkDropListData]="library[selectedList]"
+      [cdkDropListConnectedTo]="filter([inputList, resultList])"
+      class="library-items"
+      (cdkDropListDropped)="drop($event)">
+      <div class="library-item"
+           *ngFor="let item of library[selectedList]"
+           cdkDrag>
+        <div class="placeholder" *cdkDragPlaceholder></div>
+        {{item.fieldType}}
+      </div>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content class="canvas">
+    <div (click)="selectList('input')"
+         [ngStyle]="{'flex-basis': '39%'}"
+         [ngClass]="selectedList !== 'input' ? 'faded' : 'active'">
+      <div class="sub-title">
+        Input
+      </div>
+      <div
+        cdkDropList
+        #inputList="cdkDropList"
+        [cdkDropListData]="calculator.input"
+        class="form-list"
+        id="input"
+        (cdkDropListDropped)="drop($event)">
+        <div class="form-item"
+             [ngClass]="item.selected ? 'selected' : ''"
+             (click)="selectField(item)"
+             *ngFor="let item of calculator.input"
+             cdkDrag>
+          <div class="placeholder" *cdkDragPlaceholder></div>
+          <div [formGroup]="form">
+            <label>{{item.label}}</label>
+            <br>
+            <input [type]="item.type">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div (click)="selectList('result')"
+         [ngStyle]="{'flex-basis': '59%'}"
+         [ngClass]="selectedList !== 'result' ? 'faded' : 'active'">
+      <div class="sub-title">
+        Result
+      </div>
+      <div
+        cdkDropList
+        #resultList="cdkDropList"
+        [cdkDropListData]="calculator.result"
+        class="form-list"
+        id="result"
+        (cdkDropListDropped)="drop($event)">
+        <div class="form-item"
+             [ngClass]="item.selected ? 'selected' : ''"
+             (click)="selectField(item)"
+             *ngFor="let item of calculator.result"
+             cdkDrag>
+          <div class="placeholder" *cdkDragPlaceholder></div>
+          {{item.fieldType}}
+        </div>
+      </div>
+    </div>
+  </mat-drawer-content>
+  <mat-drawer mode="side" opened position="end" class="edit">
+    <div class="card-title">Edit</div>
+    <div *ngIf="selectedField">
+      <div class="sub-title">Type: {{selectedField.fieldType}}</div>
+      <form #editInput="ngForm">
+        <div class="edit-row">
+          <label>Label</label>
+          <br>
+          <input type="text" [(ngModel)]="selectedField.label" name="label">
+        </div>
+        <div class="edit-row">
+          <label>Required</label>
+          <br>
+          <mat-radio-group
+            [(ngModel)]="selectedField.required">
+            <mat-radio-button [value]="true">Yes</mat-radio-button><br>
+            <mat-radio-button [value]="false">No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+      </form>
+    </div>
+  </mat-drawer>
+</mat-drawer-container>
