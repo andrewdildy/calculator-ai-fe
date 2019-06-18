@@ -2,11 +2,31 @@
   .form-list.cdk-drop-list-dragging .form-item:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
+  .editable {
+    border: none;
+    outline: none;
+    background: transparent;
+  }
   .placeholder {
     background: #ccc;
     border: dotted 2px #999;
     min-height: 28px;
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  .calculator-name {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    padding: 16px;
+    background: #FAFAFA;
+    z-index: 2;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+    input {
+      font-size: 17px;
+    }
   }
   .library {
     width: 18%;
@@ -29,8 +49,9 @@
   .canvas {
     display: flex;
     justify-content: space-between;
-    padding: 16px;
-    height: 100%;
+    margin-top: 48px;
+    padding: 0 16px 16px 16px;
+    min-height: 90%;
     .faded {
       opacity: 0.3;
     }
@@ -40,31 +61,64 @@
       }
     }
     .form-list {
-      min-height: 20px;
+      min-height: 90%;
       border-style: solid;
       border-width: 1px;
       border-color: rgba(0, 0, 0, 0.12);
       border-radius: 3px;
-      .form-item {
+      .form-item-container {
         cursor: move;
         padding: 8px;
         border-bottom-style: solid;
         border-bottom-width: 1px;
         border-bottom-color: rgba(0, 0, 0, 0.12);
-        &:last-child {
-          border-bottom-style: none;
-        }
         &.selected {
           border-radius: 3px;
           border-style: solid;
           border-width: 1px;
           border-color: rgba(10, 132, 255);
         }
+        .form-item {
+          display: flex;
+          justify-content: space-between;
+          .form-input {
+            display: flex;
+            flex-direction: column;
+          }
+          .mat-icon {
+            cursor: pointer;
+            font-size: 16px;
+            height: auto;
+            width: auto;
+            color: rgb(255, 69, 58);
+          }
+        }
       }
     }
   }
   .edit {
     width: 24%;
+    .placeholder {
+      background: #ccc;
+      border: dotted 2px #999;
+      min-width: 20px;
+      height: 20px;
+      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+    .edit-row {
+      padding: 16px;
+      border-top-style: solid;
+      border-top-width: 1px;
+      border-top-color: rgba(0, 0, 0, 0.12);
+      display: flex;
+      flex-direction: column;
+      label {
+        padding-bottom: 8px;
+      }
+      mat-radio-button {
+        padding-bottom: 8px;
+      }
+    }
   }
 }
 

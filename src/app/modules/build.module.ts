@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core';
 import {BuildComponent} from '../components/build/build.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {BuildRoutingModule} from '../routing/build-routing.module';
-import {MatSidenavModule} from '@angular/material';
+import {MatIconModule, MatSidenavModule} from '@angular/material';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatRadioModule} from '@angular/material/radio';
+import { ResizableModule } from 'angular-resizable-element';
+
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import {MatRadioModule} from '@angular/material/radio';
     ReactiveFormsModule,
     FormsModule,
     MatRadioModule,
+    ResizableModule,
+    MatIconModule,
   ],
   exports: [
     BuildComponent

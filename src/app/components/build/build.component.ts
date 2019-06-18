@@ -1,10 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {FormGroup} from '@angular/forms';
-import {NumberField} from './number-field';
-import {TextField} from './text-field';
-import {DropdownField} from './dropdown-field';
-import {FieldBase} from './field-base';
+import {NumberInput} from './number-input';
+import {TextInput} from './text-input';
+import {DropdownInput} from './dropdown-input';
+import {InputBase} from './input-base';
+import {NumberResult} from './number-result';
+import {ResultBase} from './result-base';
+import {evaluate} from 'mathjs';
 
 @Component({
   selector: 'app-build',
@@ -16,22 +19,23 @@ export class BuildComponent implements OnInit, OnDestroy {
 
   library = {
     input: [
-      new NumberField(),
-      new TextField(),
-      new DropdownField(),
+      new NumberInput(),
+      new TextInput(),
+      new DropdownInput(),
     ],
     result: [
-      new NumberField(),
+      new NumberResult(),
     ]
   };
 
   calculator = {
+    name: 'Calculator0',
     input: [],
     result: [],
   };
 
   selectedList = 'input';
-  selectedField: FieldBase<any>;
+  selectedField: ResultBase<any> | InputBase<any>;
 
   form: FormGroup;
 
@@ -43,7 +47,7 @@ export class BuildComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -76,6 +80,20 @@ export class BuildComponent implements OnInit, OnDestroy {
 
   filter(arr: Array<any>) {
     return arr.filter(template => template.id === this.selectedList);
+  }
+
+  delete(x) {
+    this.calculator[this.selectedList] = this.calculator[this.selectedList].filter( y => y !== x);
+  }
+
+  eval() {
+    let str = this.selectedField.expression.slice();
+    this.calculator.input.forEach( item => {
+      const pattern = new RegExp(item.label, 'gi');
+      str = str.replace(pattern, item.value);
+    });
+    this.selectedField.value = evaluate(str);
+    return evaluate(str);
   }
 
 }
